@@ -1,0 +1,32 @@
+.foresight-container {
+	width: 90%;
+
+	display: flex;
+	justify-content: center;
+}
+
+.foresight-dashboard {
+	width: 90%;
+	height: 40px;
+
+	/* display: flex; */
+
+	border: 1px solid purple;
+}
+
+.season-selector {
+	width: 100%;
+
+	display: flex;
+	justify-content: center;
+
+	border: 1px solid blue;
+}
+
+.week-team-selector {
+	width: 100%;
+
+	display: flex;
+
+	border: 1px solid black;
+}
