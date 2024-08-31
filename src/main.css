@@ -108,7 +108,9 @@ nav ul {
 
 /* https://www.youtube.com/watch?v=Uu5Mgjhx8Y8 */
 .season-pill {
-	font-size: 16px;
+	height: 35px;
+
+	font-size: 15px;
 	padding: 0.5em 1em;
 	margin: 0.25em;
 	border-radius: 1em;
@@ -117,4 +119,8 @@ nav ul {
 
 	border: none;
 	outline: none;
+}
+
+.clickable {
+	cursor: pointer;
 }

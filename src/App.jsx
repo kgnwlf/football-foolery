@@ -13,8 +13,6 @@ export default function App() {
 	useEffect(() => {
 		Axios.get('http://localhost:3000/api/games/2024')
 		.then((res) => {
-			console.log(res);
-
 			setGames(res.data);
 
 		})
@@ -24,8 +22,6 @@ export default function App() {
 
 		Axios.get('http://localhost:3000/api/teams')
 		.then((res) => {
-			console.log(res);
-
 			setTeams(res.data);
 
 		})

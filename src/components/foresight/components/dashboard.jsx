@@ -1,6 +1,87 @@
 import React from 'react';
 
-export default function Dashboard () {
+export default function Dashboard ({ setBoard, view, setView, viewWeeks, setViewWeek, teams, setViewTeam }) {
+	let changeBoard = (e) => {
+		setBoard(e.target.name);
+	}
+
+	let changeView = (e) => {
+		setView(e.target.name);
+	}
+
+	let changeViewTeam = (e) => {
+		setViewTeam(e.target.name);
+	}
+
+	let changeViewWeek = (e) => {
+		setViewWeek(Number(e.target.name))
+	}
+
+	let determineScrollBarContent = () => {
+		if (view === 'team-view') {
+			let teamAbbs = Object.keys(teams);
+
+			teamAbbs.sort();
+
+			return (
+
+				<div className="dashboard-scrollable-content">
+
+					{
+
+						teamAbbs.map((team) =>
+
+							<button
+								name={ team }
+								className="season-pill"
+								onClick={ changeViewTeam }
+							>
+								{ team }
+
+							</button>
+
+						)
+
+					}
+
+				</div>
+
+			);
+
+		}
+
+		if (view === 'week-view') {
+
+			return (
+
+				<div className="dashboard-scrollable-content">
+
+					{
+
+						viewWeeks.map((week) =>
+
+							<button
+								name={ week }
+								className="season-pill"
+								onClick={ changeViewWeek }
+							>
+								{ week }
+
+							</button>
+
+						)
+
+					}
+
+				</div>
+
+			);
+
+		}
+
+		return null;
+
+	}
 
 	return (
 
@@ -11,7 +92,7 @@ export default function Dashboard () {
 				<button
 					name="preSeason"
 					className="season-pill"
-					onClick={ (e) => console.log(e.target.name) }
+					onClick={ changeBoard }
 				>
 					Pre-Season
 				</button>
@@ -19,7 +100,7 @@ export default function Dashboard () {
 				<button
 					name="regularSeason"
 					className="season-pill"
-					onClick={ (e) => console.log(e.target.name) }
+					onClick={ changeBoard }
 				>
 					Regular Season
 				</button>
@@ -27,7 +108,7 @@ export default function Dashboard () {
 				<button
 					name="postSeason"
 					className="season-pill"
-					onClick={ (e) => console.log(e.target.name) }
+					onClick={ changeBoard }
 				>
 					Post-Season
 				</button>
@@ -39,7 +120,7 @@ export default function Dashboard () {
 				<button
 					name="week-view"
 					className="season-pill"
-					onClick={ (e) => console.log(e.target.name) }
+					onClick={ changeView }
 				>
 					Weeks
 				</button>
@@ -47,7 +128,7 @@ export default function Dashboard () {
 				<button
 					name="team-view"
 					className="season-pill"
-					onClick={ (e) => console.log(e.target.name) }
+					onClick={ changeView }
 				>
 					Teams
 				</button>
@@ -55,18 +136,18 @@ export default function Dashboard () {
 				<button
 					name="game-view"
 					className="season-pill"
-					onClick={ (e) => console.log(e.target.name) }
+					onClick={ changeView }
 				>
 					All
 				</button>
 
-				<button
-					name="expand-view"
-					className="season-pill"
-					onClick={ (e) => console.log(e.target.name) }
-				>
-					Expand
-				</button>
+				{ determineScrollBarContent() }
+
+			</div>
+
+			<div className="info-and-controls">
+
+
 
 			</div>
 

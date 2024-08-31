@@ -1,15 +1,18 @@
 .foresight-container {
 	width: 90%;
 
-	display: flex;
-	justify-content: center;
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: 100px, 500px;
+
+	justify-items: center;
+
+	border: 1px solid green;
 }
 
 .foresight-dashboard {
 	width: 90%;
-	height: 40px;
-
-	/* display: flex; */
+	max-height: 100px;
 
 	border: 1px solid purple;
 }
@@ -19,14 +22,77 @@
 
 	display: flex;
 	justify-content: center;
-
-	border: 1px solid blue;
 }
 
 .week-team-selector {
 	width: 100%;
+	max-height: 45px;
 
 	display: flex;
+}
 
-	border: 1px solid black;
+.dashboard-scrollable-content {
+	/* width: 71.5%; */
+	height: 53px;
+
+	display: grid;
+	gap: 0.5rem;
+	grid-auto-flow: column;
+	grid-auto-columns: 60px;
+
+	overflow-x: auto;
+	overflow-y: hidden;
+	overscroll-behavior-inline: contain;
+}
+
+.dashboard-scrollable-content::-webkit-scrollbar {
+	width: 0px;
+}
+
+.game-grid-container {
+	display: grid;
+	width: 90%;
+
+	grid-template-columns: repeat(4, 1fr);
+	grid-auto-rows: 200px;
+
+
+	justify-items: center;
+	align-items: center;
+}
+
+.game-card {
+	display: flex;
+
+	width: 100%;
+	height: 100%;
+
+	justify-content: center;
+	align-items: center;
+
+	border: 1px solid red;
+}
+
+.team {
+	display: flex;
+
+	width: 40%;
+	height: 40%;
+
+	font-weight: 600;
+	color: white;
+
+	justify-content: center;
+	align-items: center;
+
+}
+
+.losing-team {
+	background: rgb(169, 169, 169) !important;
+	border: 2px solid rgb(158, 158, 158) !important;
+	color: rgb(208, 208, 208);
+}
+
+.info-and-controls {
+	border: 1px solid blue;
 }
