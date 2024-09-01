@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react';
 
-export default function Game ({ game, teams, playerPredictions }) {
+export default function Game ({ game, teams, playerPredictions, setPlayerPredictions }) {
+	const [primetimeInfo, setPrimetimeInfo] = useState('');
+	const [stadium, setStadium] = useState('');
+	const [time, setTime] = useState('');
+
 	const [losingTeam, setWinningTeam] = useState('');
+
+	let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+	useEffect(() => {
+		setPrimetimeInfo(determinePrimetime());
+		setStadium(determineStadium());
+		setTime(determineTime());
+
+	}, []);
 
 	useEffect(() => {
 		if (playerPredictions[game.gameID]?.tie) {
@@ -33,8 +46,10 @@ export default function Game ({ game, teams, playerPredictions }) {
 	}
 
 	let updateWinner = (e) => {
-		if (!playerPredictions[game.gameID]) {
-			playerPredictions[game.gameID] = {
+		let playerPredictionsCopy = { ...playerPredictions };
+
+		if (!playerPredictionsCopy[game.gameID]) {
+			playerPredictionsCopy[game.gameID] = {
 				homeWin: false,
 				awayWin: false,
 				tie: false
@@ -42,63 +57,117 @@ export default function Game ({ game, teams, playerPredictions }) {
 		}
 
 		let toggledTeam = e.target.id;
-		let toggledTeamStatus = playerPredictions[game.gameID][toggledTeam];
+		let toggledTeamStatus = playerPredictionsCopy[game.gameID][toggledTeam];
 
 		let otherTeam =  findOtherTeam[toggledTeam];
-		let otherTeamStatus = playerPredictions[game.gameID][otherTeam];
+		let otherTeamStatus = playerPredictionsCopy[game.gameID][otherTeam];
 
 		if (toggledTeamStatus) {
-			playerPredictions[game.gameID][toggledTeam] = false;
+			playerPredictionsCopy[game.gameID][toggledTeam] = false;
 
 			return;
 
 		}
 
-		playerPredictions[game.gameID][toggledTeam] = true;
+		playerPredictionsCopy[game.gameID][toggledTeam] = true;
 
 		setWinningTeam(toggledTeam);
 
 		if (otherTeamStatus) {
-			playerPredictions[game.gameID][otherTeam] = false;
+			playerPredictionsCopy[game.gameID][otherTeam] = false;
 
 		}
+
+		setPlayerPredictions(playerPredictionsCopy);
+
+	}
+
+	let determinePrimetime = () => {
+		if (game.primetime) { // Get in US time incase player is outside the US.
+			return `${ days[new Date(new Date(game.time).toLocaleString("en-US")).getDay()] } Night Football`;
+		}
+
+		return null;
+
+	}
+
+	let determineStadium = () => {
+		if (game.international) {
+			return game.gameDetails.stadium;
+		}
+
+		return teams[game.home.team].stadium;
+	}
+
+	let determineTime = () => {
+		let date = new Date(game.time);
+		let dateString = date.toLocaleString('default', { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+		let hours = date.getHours();
+
+		let time = date.toLocaleString().split(', ');
+		time = time[1].split(':00 ').join(' ');
+
+		if (hours === 0) {
+			time = 'TBD';
+		}
+
+		return `${ dateString }, ${ time }`;
 
 	}
 
 	return (
 
-		<div className="game-card">
+		<div className="game-card-grid">
 
-			<span
-				id="homeWin"
-				className={ `team clickable${ losingTeam === 'awayWin' ? ' losing-team' : '' }` }
-				onClick={ updateWinner }
-				style={{
-					'background': `${ teams[game.home.team].primaryColor }`,
-					'border': `4px solid ${ teams[game.home.team].secondaryColor }`
-				}}
-			>
+			<div className="primetime-game">{ primetimeInfo }</div>
 
-				{ game.home.team }
+			<div className="game-card">
 
-			</span>
+				<span
+					id="homeWin"
+					className={ `team clickable${ losingTeam === 'awayWin' ? ' losing-team' : '' }` }
+					onClick={ updateWinner }
+					style={{
+						'background': `${ teams[game.home.team].primaryColor }`,
+						'border': `4px solid ${ teams[game.home.team].secondaryColor }`
+					}}
+				>
 
-			<span
-				id="awayWin"
-				className={ `team clickable${ losingTeam === 'homeWin' ? ' losing-team' : '' }` }
-				onClick={ updateWinner }
-				style={{
-					'background': `${ teams[game.away.team].primaryColor }`,
-					'border': `4px solid ${ teams[game.away.team].secondaryColor }`
-				}}
-			>
+					{ game.home.team }
 
-				{ game.away.team }
+				</span>
 
-			</span>
+				<span
+					id="awayWin"
+					className={ `team clickable${ losingTeam === 'homeWin' ? ' losing-team' : '' }` }
+					onClick={ updateWinner }
+					style={{
+						'background': `${ teams[game.away.team].primaryColor }`,
+						'border': `4px solid ${ teams[game.away.team].secondaryColor }`
+					}}
+				>
+
+					{ game.away.team }
+
+				</span>
+
+			</div>
+
+			<div className="game-tie">
+
+				TIE
+
+			</div>
+
+			<div className="game-time-stadium-card">
+
+				<div className="auto-x-margins">{ time }</div>
+				<div className="auto-x-margins">{ stadium }</div>
+
+			</div>
 
 		</div>
 
-	)
+	);
 
 }

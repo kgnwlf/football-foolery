@@ -3,16 +3,14 @@
 
 	display: grid;
 	grid-template-columns: 100%;
-	grid-template-rows: 100px, 500px;
+	grid-template-rows: 200px, 600px;
 
 	justify-items: center;
-
-	border: 1px solid green;
 }
 
 .foresight-dashboard {
 	width: 90%;
-	max-height: 100px;
+	max-height: 200px;
 
 	border: 1px solid purple;
 }
@@ -32,7 +30,6 @@
 }
 
 .dashboard-scrollable-content {
-	/* width: 71.5%; */
 	height: 53px;
 
 	display: grid;
@@ -56,9 +53,20 @@
 	grid-template-columns: repeat(4, 1fr);
 	grid-auto-rows: 200px;
 
-
 	justify-items: center;
 	align-items: center;
+}
+
+.game-card-grid {
+	display: grid;
+
+	grid-template-columns: 100%;
+	grid-auto-rows: 10% 35% 10% 20%;
+
+	width: 100%;
+	height: 100%;
+
+	border: 1px solid red;
 }
 
 .game-card {
@@ -70,7 +78,48 @@
 	justify-content: center;
 	align-items: center;
 
-	border: 1px solid red;
+	/* border: 1px solid red; */
+
+}
+
+.primetime-game {
+	margin-top: 15px;
+
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.game-time-stadium-card {
+	margin-top: 10px;
+
+	display: grid;
+
+	justify-content: center;
+	align-items: center;
+
+	grid-template-columns: 100%;
+
+	font-size: 12px;
+	font-weight: 600;
+
+	/* border: 1px solid blue; */
+
+}
+
+.game-tie {
+	margin-bottom: 10px;
+
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+	/* border: 1px solid green; */
 }
 
 .team {
@@ -94,5 +143,28 @@
 }
 
 .info-and-controls {
-	border: 1px solid blue;
+	display: grid;
+
+	margin-top: 5px;
+	height: 50px;
+
+	grid-template-columns: 30% 40% 30%;
+}
+
+.foresight-team-record {
+	display: flex;
+
+	justify-content: start;
+	align-items: center;
+
+	margin-left: 10px;
+
+	font-weight: 600;
+	font-size: 21px;
+}
+
+.foresight-buttons {
+	margin-right: 10px;
+	display: flex;
+	justify-content: end;
 }

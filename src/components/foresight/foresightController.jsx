@@ -21,6 +21,14 @@ export default function ForesightController ({ teams, games }) {
 			return;
 		}
 
+		Axios.get(`http://localhost:3000/api/gameSheet/2024/player2/footballForesight/${ board }`)
+		.then((res) => {
+			setPlayerPredictions(res.data);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+
 		setBoardGames(games[board]);
 
 		let weeksAvailableInBoard = [ ...games[board] ].map((game) => game.week);
@@ -32,15 +40,27 @@ export default function ForesightController ({ teams, games }) {
 
 	}, [games, board]);
 
-	useEffect(() => {
-		Axios.get('http://localhost:3000/api/gameSheet/2024/player1/footballForesight/regularSeason')
+	let saveGameSheet = (submit = false) => {
+		let payload = {
+			player: 'player2',
+			gameMode: 'footballForesight',
+			board: board,
+			gameSheet: playerPredictions,
+		}
+
+		if (submit) {
+			payload['submitted'] = true;
+		}
+
+		Axios.put('http://localhost:3000/api/gameSheet/', payload)
 		.then((res) => {
-			setPlayerPredictions(res.data);
+			console.log(res);
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error(err);
 		});
-	}, []);
+
+	}
 
 	return (
 
@@ -48,18 +68,23 @@ export default function ForesightController ({ teams, games }) {
 
 			<Dashboard
 				setBoard={ setBoard }
+				boardGames={ boardGames }
+				playerPredictions={ playerPredictions }
 				view={ view }
 				setView={ setView }
 				viewWeeks={ viewWeeks }
 				setViewWeek={ setViewWeek }
 				teams={ teams }
+				viewTeam={ viewTeam }
 				setViewTeam={ setViewTeam }
+				saveGameSheet={ saveGameSheet }
 			/>
 
 			<GameGrid
 				teams={ teams }
 				boardGames={ boardGames }
 				playerPredictions={ playerPredictions }
+				setPlayerPredictions={ setPlayerPredictions }
 				view={ view }
 				viewWeek={ viewWeek }
 				viewTeam={ viewTeam }

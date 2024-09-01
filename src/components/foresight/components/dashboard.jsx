@@ -1,6 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function Dashboard ({ setBoard, view, setView, viewWeeks, setViewWeek, teams, setViewTeam }) {
+export default function Dashboard ({ setBoard, boardGames, playerPredictions, view, setView, viewWeeks, setViewWeek, teams, viewTeam, setViewTeam, saveGameSheet }) {
+	const [teamLocation, setTeamLocation] = useState('Arizona');
+	const [wins, setWins] = useState(0);
+	const [losses, setLosses] = useState(0);
+
+	useEffect(() => {
+		let gamesWon = [ ...boardGames ].reduce((acc, game) => {
+			if (game.away.team === viewTeam) {
+				if (teamWon(game.gameID, 'awayWin')) {
+					return acc + 1;
+				}
+			}
+
+			if (game.home.team === viewTeam) {
+				if (teamWon(game.gameID, 'homeWin')) {
+					return acc + 1;
+				}
+			}
+
+			return acc;
+
+		}, 0);
+
+		let gamesLost = [ ...boardGames ].reduce((acc, game) => {
+			if (game.away.team === viewTeam) {
+				if (teamLost(game.gameID, 'awayWin')) {
+					return acc + 1;
+				}
+			}
+
+			if (game.home.team === viewTeam) {
+				if (teamLost(game.gameID, 'homeWin')) {
+					return acc + 1;
+				}
+			}
+
+			return acc;
+
+		}, 0);
+
+		setWins(gamesWon);
+		setLosses(gamesLost);
+
+	}, [teamLocation, playerPredictions, boardGames]);
+
 	let changeBoard = (e) => {
 		setBoard(e.target.name);
 	}
@@ -11,6 +55,9 @@ export default function Dashboard ({ setBoard, view, setView, viewWeeks, setView
 
 	let changeViewTeam = (e) => {
 		setViewTeam(e.target.name);
+
+		setTeamLocation(teams[e.target.name].teamLocation)
+
 	}
 
 	let changeViewWeek = (e) => {
@@ -83,6 +130,30 @@ export default function Dashboard ({ setBoard, view, setView, viewWeeks, setView
 
 	}
 
+	let teamWon = (gameID, winOutcome) => {
+		if (playerPredictions[gameID] === undefined) {
+			return false;
+		}
+
+		return playerPredictions[gameID][winOutcome];
+	}
+
+	let teamLost = (gameID, lossOutcome) => {
+		if (playerPredictions[gameID] === undefined) {
+			return false;
+		}
+
+		return !playerPredictions[gameID][lossOutcome];
+	}
+
+	let isSaveAndSubmitDisabled = () => {
+		let now = new Date();
+		now = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes());
+
+		return boardGames[0]?.time < now;
+
+	}
+
 	return (
 
 		<div className="foresight-dashboard">
@@ -147,7 +218,45 @@ export default function Dashboard ({ setBoard, view, setView, viewWeeks, setView
 
 			<div className="info-and-controls">
 
+				<div
+					className="foresight-team-record"
+				>
+					{
 
+						view === 'team-view' && teamLocation !== ''
+
+						?
+
+						`${ teamLocation }'s record is ${ wins }-${ losses }`
+
+						:
+
+						null
+
+					}
+				</div>
+
+				<div></div>
+
+				<div className="foresight-buttons">
+
+					<button
+						disabled={ isSaveAndSubmitDisabled() }
+						className="season-pill"
+						onClick={ () => saveGameSheet(false) }
+					>
+						Save
+					</button>
+
+					<button
+						disabled={ isSaveAndSubmitDisabled() }
+						className="season-pill"
+						onClick={ () => saveGameSheet(true) }
+					>
+						Submit
+					</button>
+
+				</div>
 
 			</div>
 
