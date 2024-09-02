@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-export default function Game ({ game, teams, playerPredictions, setPlayerPredictions }) {
+export default function Game ({ game, teams, board, playerPredictions, setPlayerPredictions }) {
 	const [primetimeInfo, setPrimetimeInfo] = useState('');
 	const [stadium, setStadium] = useState('');
 	const [time, setTime] = useState('');
 
-	const [losingTeam, setWinningTeam] = useState('');
+	const [winningTeam, setWinningTeam] = useState('');
 
 	let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -40,12 +40,13 @@ export default function Game ({ game, teams, playerPredictions, setPlayerPredict
 
 	}, [playerPredictions, game]);
 
-	let findOtherTeam = {
-		'homeWin': 'awayWin',
-		'awayWin': 'homeWin'
-	}
 
 	let updateWinner = (e) => {
+		let findOtherTeam = {
+			'homeWin': 'awayWin',
+			'awayWin': 'homeWin'
+		};
+
 		let playerPredictionsCopy = { ...playerPredictions };
 
 		if (!playerPredictionsCopy[game.gameID]) {
@@ -121,25 +122,14 @@ export default function Game ({ game, teams, playerPredictions, setPlayerPredict
 
 			<div className="primetime-game">{ primetimeInfo }</div>
 
-			<div className="game-card">
-
-				<span
-					id="homeWin"
-					className={ `team clickable${ losingTeam === 'awayWin' ? ' losing-team' : '' }` }
-					onClick={ updateWinner }
-					style={{
-						'background': `${ teams[game.home.team].primaryColor }`,
-						'border': `4px solid ${ teams[game.home.team].secondaryColor }`
-					}}
-				>
-
-					{ game.home.team }
-
-				</span>
+			<div
+				className="game-card"
+				onClick={ () => console.log(playerPredictions[game.gameID]) }
+			>
 
 				<span
 					id="awayWin"
-					className={ `team clickable${ losingTeam === 'homeWin' ? ' losing-team' : '' }` }
+					className={ `team clickable${ winningTeam === 'homeWin' ? ' losing-team' : '' }` }
 					onClick={ updateWinner }
 					style={{
 						'background': `${ teams[game.away.team].primaryColor }`,
@@ -151,18 +141,45 @@ export default function Game ({ game, teams, playerPredictions, setPlayerPredict
 
 				</span>
 
+				<span
+					id="homeWin"
+					className={ `team clickable${ winningTeam === 'awayWin' ? ' losing-team' : '' }` }
+					onClick={ updateWinner }
+					style={{
+						'background': `${ teams[game.home.team].primaryColor }`,
+						'border': `4px solid ${ teams[game.home.team].secondaryColor }`
+					}}
+				>
+
+					{ game.home.team }
+
+				</span>
+
 			</div>
 
 			<div className="game-tie">
 
-				TIE
+				{
+
+					board === 'postSeason'
+
+					?
+
+					null
+
+					:
+
+					'TIE'
+
+				}
+
 
 			</div>
 
 			<div className="game-time-stadium-card">
 
 				<div className="auto-x-margins">{ time }</div>
-				<div className="auto-x-margins">{ stadium }</div>
+				<div className="auto-x-margins">@{ stadium }</div>
 
 			</div>
 

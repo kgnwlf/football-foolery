@@ -3,16 +3,179 @@
 
 	display: grid;
 	grid-template-columns: 100%;
-	grid-template-rows: 200px, 600px;
+	grid-template-rows: 200px 150px 600px;
 
 	justify-items: center;
+}
+
+.foresight-playoff-seeding {
+	display: flex;
+	justify-content: center;
+
+	height: 100%;
+	width: 90%;
+
+	border: 1px solid red;
+}
+
+.conference-container {
+	width: 49%;
+	margin-right: 12px;
+}
+
+.conference-grid {
+	display: grid;
+
+	width: 100%;
+	height: 50%;
+
+	margin-top: 2px;
+
+	column-gap: 12px;
+	row-gap: 12px;
+
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: repeat(2, 30%);
+
+	grid-template-areas:
+	'second third fourth'
+	'fifth sixth seventh';
+
+	justify-content: center;
+	align-items: center;
+
+}
+
+.nfc {
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+	color: white;
+	font-weight: 600;
+
+	width: 100%;
+	height: 10%;
+
+	background-color: #013369;
+
+	border: 4px solid white;
+}
+
+.afc {
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+	color: white;
+	font-weight: 600;
+
+	width: 100%;
+	height: 10%;
+
+	background-color: #d50a0a;
+
+	border: 4px solid white;
+}
+
+.first {
+	width: 100%;
+	height: 18%;
+
+	margin-bottom: 6px;
+
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+	font-weight: 600;
+	color: white;
+
+}
+
+.second {
+	grid-area: second;
+
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+}
+
+.third {
+	grid-area: third;
+
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+}
+
+.fourth {
+	grid-area: fourth;
+
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+}
+
+.fifth {
+	grid-area: fifth;
+
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+}
+
+.sixth {
+	grid-area: sixth;
+
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+}
+
+.seventh {
+	grid-area: seventh;
+
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+}
+
+.seeding-sizing {
+	width: 100%;
+	height: 100%;
+
+	font-weight: 600;
+	color: white;
+}
+
+.playoff-seeding-record {
+	margin-top: 4px;
+	margin-left: 3px;
+
+	font-weight: 600;
+	font-size: 10px;
 }
 
 .foresight-dashboard {
 	width: 90%;
 	max-height: 200px;
 
-	border: 1px solid purple;
 }
 
 .season-selector {
@@ -47,8 +210,12 @@
 }
 
 .game-grid-container {
+	margin-top: 1rem;
+
 	display: grid;
 	width: 90%;
+
+	gap: 1rem;
 
 	grid-template-columns: repeat(4, 1fr);
 	grid-auto-rows: 200px;
@@ -61,12 +228,12 @@
 	display: grid;
 
 	grid-template-columns: 100%;
-	grid-auto-rows: 10% 35% 10% 20%;
+	grid-auto-rows: 10% 35% 10% 45%;
 
 	width: 100%;
 	height: 100%;
 
-	border: 1px solid red;
+	background-color: #E6D1BA;
 }
 
 .game-card {
@@ -77,9 +244,6 @@
 
 	justify-content: center;
 	align-items: center;
-
-	/* border: 1px solid red; */
-
 }
 
 .primetime-game {
@@ -103,12 +267,12 @@
 	align-items: center;
 
 	grid-template-columns: 100%;
+	grid-auto-rows: 25px;
 
 	font-size: 12px;
 	font-weight: 600;
 
-	/* border: 1px solid blue; */
-
+	background-color: #f6e9db;
 }
 
 .game-tie {
@@ -118,8 +282,6 @@
 
 	justify-content: center;
 	align-items: center;
-
-	/* border: 1px solid green; */
 }
 
 .team {
@@ -133,7 +295,6 @@
 
 	justify-content: center;
 	align-items: center;
-
 }
 
 .losing-team {

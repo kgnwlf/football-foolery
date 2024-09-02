@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Game from './game.jsx';
 
-export default function GameGrid ({ teams, boardGames, playerPredictions, setPlayerPredictions, view, viewWeek, viewTeam }) {
+export default function GameGrid ({ teams, board, boardGames, playerPredictions, setPlayerPredictions, view, viewWeek, viewTeam }) {
 	const [displayedGames, setDisplayedGames] = useState([]);
 
 	useEffect(() => {
@@ -46,6 +46,7 @@ export default function GameGrid ({ teams, boardGames, playerPredictions, setPla
 						key={ `${ game.away.team }${ game.time }${ game.home.team }` }
 						game={ game }
 						teams={ teams }
+						board={ board }
 						playerPredictions={ playerPredictions }
 						setPlayerPredictions={ setPlayerPredictions }
 					/>

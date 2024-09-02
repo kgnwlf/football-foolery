@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 
+import PlayoffSeeding from './components/playoffSeeding.jsx';
 import Dashboard from './components/dashboard.jsx';
 import GameGrid from './components/gameGrid.jsx';
 
@@ -66,6 +67,12 @@ export default function ForesightController ({ teams, games }) {
 
 		<div className="foresight-container">
 
+			<PlayoffSeeding
+				boardGames={ boardGames }
+				teams={ teams }
+				playerPredictions={ playerPredictions }
+			/>
+
 			<Dashboard
 				setBoard={ setBoard }
 				boardGames={ boardGames }
@@ -82,6 +89,7 @@ export default function ForesightController ({ teams, games }) {
 
 			<GameGrid
 				teams={ teams }
+				board={ board }
 				boardGames={ boardGames }
 				playerPredictions={ playerPredictions }
 				setPlayerPredictions={ setPlayerPredictions }
