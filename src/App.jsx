@@ -7,6 +7,7 @@ import ForesightController from './components/foresight/foresightController.jsx'
 import './main.css';
 
 export default function App() {
+	const [player, setPlayer] = useState('player2');
 	const [teams, setTeams] = useState({  });
 	const [games, setGames] = useState({  });
 
@@ -39,6 +40,7 @@ export default function App() {
 			<div className="content">
 
 				<ForesightController
+					player={ player }
 					teams={ teams }
 					games={ games }
 				/>

@@ -293,7 +293,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 						}}
 					>
 
-						{ nfcFirst[0] }<span className="playoff-seeding-record">{ `(${ nfcFirst[1]?.wins }-${ nfcFirst[1]?.losses })` }</span>
+						{ nfcFirst[0] }
+
+						<span className="playoff-seeding-record">
+
+							{ `(${ nfcFirst[1]?.wins }-${ nfcFirst[1]?.losses }${ nfcFirst[1].ties > 0 ? `-${ nfcFirst[1].ties }` : '' })` }
+
+						</span>
 
 					</div>
 
@@ -308,7 +314,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ nfcSecond[0] }<span className="playoff-seeding-record">{ `(${ nfcSecond[1]?.wins }-${ nfcSecond[1]?.losses })` }</span>
+							{ nfcSecond[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ nfcSecond[1]?.wins }-${ nfcSecond[1]?.losses }${ nfcSecond[1].ties > 0 ? `-${ nfcSecond[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 
@@ -320,7 +332,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ nfcThird[0] }<span className="playoff-seeding-record">{ `(${ nfcThird[1]?.wins }-${ nfcThird[1]?.losses })` }</span>
+							{ nfcThird[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ nfcThird[1]?.wins }-${ nfcThird[1]?.losses }${ nfcThird[1].ties > 0 ? `-${ nfcThird[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 
@@ -332,7 +350,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ nfcFourth[0] }<span className="playoff-seeding-record">{ `(${ nfcFourth[1]?.wins }-${ nfcFourth[1]?.losses })` }</span>
+							{ nfcFourth[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ nfcFourth[1]?.wins }-${ nfcFourth[1]?.losses }${ nfcFourth[1].ties > 0 ? `-${ nfcFourth[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 
@@ -344,7 +368,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ nfcFifth[0] }<span className="playoff-seeding-record">{ `(${ nfcFifth[1]?.wins }-${ nfcFifth[1]?.losses })` }</span>
+							{ nfcFifth[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ nfcFifth[1]?.wins }-${ nfcFifth[1]?.losses }${ nfcFifth[1].ties > 0 ? `-${ nfcFifth[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 
@@ -356,7 +386,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ nfcSixth[0] }<span className="playoff-seeding-record">{ `(${ nfcSixth[1]?.wins }-${ nfcSixth[1]?.losses })` }</span>
+							{ nfcSixth[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ nfcSixth[1]?.wins }-${ nfcSixth[1]?.losses }${ nfcSixth[1].ties > 0 ? `-${ nfcSixth[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 
@@ -368,7 +404,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ nfcSeventh[0] }<span className="playoff-seeding-record">{ `(${ nfcSeventh[1]?.wins }-${ nfcSeventh[1]?.losses })` }</span>
+							{ nfcSeventh[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ nfcSeventh[1]?.wins }-${ nfcSeventh[1]?.losses }${ nfcSeventh[1].ties > 0 ? `-${ nfcSeventh[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 
@@ -400,7 +442,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 						}}
 					>
 
-						{ afcFirst[0] }<span className="playoff-seeding-record">{ `(${ afcFirst[1]?.wins }-${ afcFirst[1]?.losses })` }</span>
+						{ afcFirst[0] }
+
+						<span className="playoff-seeding-record">
+
+							{ `(${ afcFirst[1]?.wins }-${ afcFirst[1]?.losses }${ afcFirst[1].ties > 0 ? `-${ afcFirst[1].ties }` : '' })` }
+
+						</span>
 
 					</div>
 
@@ -415,7 +463,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ afcSecond[0] }<span className="playoff-seeding-record">{ `(${ afcSecond[1]?.wins }-${ afcSecond[1]?.losses })` }</span>
+							{ afcSecond[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ afcSecond[1]?.wins }-${ afcSecond[1]?.losses }${ afcSecond[1].ties > 0 ? `-${ afcSecond[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 
@@ -427,7 +481,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ afcThird[0] }<span className="playoff-seeding-record">{ `(${ afcThird[1]?.wins }-${ afcThird[1]?.losses })` }</span>
+							{ afcThird[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ afcThird[1]?.wins }-${ afcThird[1]?.losses }${ afcThird[1].ties > 0 ? `-${ afcThird[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 
@@ -439,7 +499,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ afcFourth[0] }<span className="playoff-seeding-record">{ `(${ afcFourth[1]?.wins }-${ afcFourth[1]?.losses })` }</span>
+							{ afcFourth[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ afcFourth[1]?.wins }-${ afcFourth[1]?.losses }${ afcFourth[1].ties > 0 ? `-${ afcFourth[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 
@@ -451,7 +517,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ afcFifth[0] }<span className="playoff-seeding-record">{ `(${ afcFifth[1]?.wins }-${ afcFifth[1]?.losses })` }</span>
+							{ afcFifth[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ afcFifth[1]?.wins }-${ afcFifth[1]?.losses }${ afcFifth[1].ties > 0 ? `-${ afcFifth[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 
@@ -463,7 +535,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ afcSixth[0] }<span className="playoff-seeding-record">{ `(${ afcSixth[1]?.wins }-${ afcSixth[1]?.losses })` }</span>
+							{ afcSixth[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ afcSixth[1]?.wins }-${ afcSixth[1]?.losses }${ afcSixth[1].ties > 0 ? `-${ afcSixth[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 
@@ -475,7 +553,13 @@ export default function PlayoffSeeding ({ boardGames, teams, playerPredictions }
 							}}
 						>
 
-							{ afcSeventh[0] }<span className="playoff-seeding-record">{ `(${ afcSeventh[1]?.wins }-${ afcSeventh[1]?.losses })` }</span>
+							{ afcSeventh[0] }
+
+							<span className="playoff-seeding-record">
+
+								{ `(${ afcSeventh[1]?.wins }-${ afcSeventh[1]?.losses }${ afcSeventh[1].ties > 0 ? `-${ afcSeventh[1].ties }` : '' })` }
+
+							</span>
 
 						</div>
 

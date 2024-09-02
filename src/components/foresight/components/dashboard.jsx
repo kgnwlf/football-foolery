@@ -5,7 +5,11 @@ export default function Dashboard ({ setBoard, boardGames, playerPredictions, vi
 	const [wins, setWins] = useState(0);
 	const [losses, setLosses] = useState(0);
 
+	const [saveDisabled, setSaveDisabled] = useState(true);
+
 	useEffect(() => {
+		isSaveAndSubmitDisabled();
+
 		let gamesWon = [ ...boardGames ].reduce((acc, game) => {
 			if (game.away.team === viewTeam) {
 				if (teamWon(game.gameID, 'awayWin')) {
@@ -150,7 +154,7 @@ export default function Dashboard ({ setBoard, boardGames, playerPredictions, vi
 		let now = new Date();
 		now = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes());
 
-		return boardGames[0]?.time < now;
+		setSaveDisabled(boardGames[0]?.time < now);
 
 	}
 
@@ -241,7 +245,7 @@ export default function Dashboard ({ setBoard, boardGames, playerPredictions, vi
 				<div className="foresight-buttons">
 
 					<button
-						disabled={ isSaveAndSubmitDisabled() }
+						disabled={ saveDisabled }
 						className="season-pill"
 						onClick={ () => saveGameSheet(false) }
 					>
@@ -249,7 +253,7 @@ export default function Dashboard ({ setBoard, boardGames, playerPredictions, vi
 					</button>
 
 					<button
-						disabled={ isSaveAndSubmitDisabled() }
+						disabled={ saveDisabled }
 						className="season-pill"
 						onClick={ () => saveGameSheet(true) }
 					>

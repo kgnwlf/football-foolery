@@ -7,7 +7,7 @@ import GameGrid from './components/gameGrid.jsx';
 
 import './foresight.css';
 
-export default function ForesightController ({ teams, games }) {
+export default function ForesightController ({ player, teams, games }) {
 	const [playerPredictions, setPlayerPredictions] = useState([  ]);
 	const [board, setBoard] = useState('regularSeason'); // Set default to which ever is closest.
 	const [boardGames, setBoardGames] = useState([  ]);
@@ -22,8 +22,11 @@ export default function ForesightController ({ teams, games }) {
 			return;
 		}
 
-		Axios.get(`http://localhost:3000/api/gameSheet/2024/player2/footballForesight/${ board }`)
+		console.log(`Getting ${ player }'s ${ board } predictions...`);
+
+		Axios.get(`http://localhost:3000/api/gameSheet/2024/${ player }/footballForesight/${ board }`)
 		.then((res) => {
+			console.log(res.data)
 			setPlayerPredictions(res.data);
 		})
 		.catch((err) => {

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-export default function Game ({ game, teams, board, playerPredictions, setPlayerPredictions }) {
+export default function Game ({ key, game, teams, board, playerPredictions, setPlayerPredictions }) {
 	const [primetimeInfo, setPrimetimeInfo] = useState('');
 	const [stadium, setStadium] = useState('');
 	const [time, setTime] = useState('');
 
-	const [winningTeam, setWinningTeam] = useState('');
+	const [outcome, setOutcome] = useState('');
 
 	let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -18,21 +18,21 @@ export default function Game ({ game, teams, board, playerPredictions, setPlayer
 
 	useEffect(() => {
 		if (playerPredictions[game.gameID]?.tie) {
-			setWinningTeam('');
+			setOutcome('tie');
 
 			return;
 
 		}
 
 		if (playerPredictions[game.gameID]?.homeWin) {
-			setWinningTeam('homeWin');
+			setOutcome('homeWin');
 
 			return;
 
 		}
 
 		if (playerPredictions[game.gameID]?.awayWin) {
-			setWinningTeam('awayWin');
+			setOutcome('awayWin');
 
 			return;
 
@@ -40,13 +40,8 @@ export default function Game ({ game, teams, board, playerPredictions, setPlayer
 
 	}, [playerPredictions, game]);
 
-
-	let updateWinner = (e) => {
-		let findOtherTeam = {
-			'homeWin': 'awayWin',
-			'awayWin': 'homeWin'
-		};
-
+	let updatePlayerPredictions = (e) => {
+		let newOutcome = e.target.id;
 		let playerPredictionsCopy = { ...playerPredictions };
 
 		if (!playerPredictionsCopy[game.gameID]) {
@@ -57,25 +52,26 @@ export default function Game ({ game, teams, board, playerPredictions, setPlayer
 			}
 		}
 
-		let toggledTeam = e.target.id;
-		let toggledTeamStatus = playerPredictionsCopy[game.gameID][toggledTeam];
+		if (newOutcome === 'tie') {
+			playerPredictionsCopy[game.gameID].tie = true;
 
-		let otherTeam =  findOtherTeam[toggledTeam];
-		let otherTeamStatus = playerPredictionsCopy[game.gameID][otherTeam];
+			playerPredictionsCopy[game.gameID].homeWin = false;
+			playerPredictionsCopy[game.gameID].awayWin = false;
+		}
 
-		if (toggledTeamStatus) {
-			playerPredictionsCopy[game.gameID][toggledTeam] = false;
+		if (newOutcome === 'awayWin') {
+			playerPredictionsCopy[game.gameID].awayWin = true;
 
-			return;
+			playerPredictionsCopy[game.gameID].homeWin = false;
+			playerPredictionsCopy[game.gameID].tie = false;
 
 		}
 
-		playerPredictionsCopy[game.gameID][toggledTeam] = true;
+		if (newOutcome === 'homeWin') {
+			playerPredictionsCopy[game.gameID].homeWin = true;
 
-		setWinningTeam(toggledTeam);
-
-		if (otherTeamStatus) {
-			playerPredictionsCopy[game.gameID][otherTeam] = false;
+			playerPredictionsCopy[game.gameID].awayWin = false;
+			playerPredictionsCopy[game.gameID].tie = false;
 
 		}
 
@@ -122,15 +118,12 @@ export default function Game ({ game, teams, board, playerPredictions, setPlayer
 
 			<div className="primetime-game">{ primetimeInfo }</div>
 
-			<div
-				className="game-card"
-				onClick={ () => console.log(playerPredictions[game.gameID]) }
-			>
+			<div className="game-card">
 
 				<span
 					id="awayWin"
-					className={ `team clickable${ winningTeam === 'homeWin' ? ' losing-team' : '' }` }
-					onClick={ updateWinner }
+					className={ `team clickable${ outcome === 'homeWin' || outcome === 'tie' ? ' losing-team' : '' }` }
+					onClick={ updatePlayerPredictions }
 					style={{
 						'background': `${ teams[game.away.team].primaryColor }`,
 						'border': `4px solid ${ teams[game.away.team].secondaryColor }`
@@ -143,8 +136,8 @@ export default function Game ({ game, teams, board, playerPredictions, setPlayer
 
 				<span
 					id="homeWin"
-					className={ `team clickable${ winningTeam === 'awayWin' ? ' losing-team' : '' }` }
-					onClick={ updateWinner }
+					className={ `team clickable${ outcome === 'awayWin' || outcome === 'tie' ? ' losing-team' : '' }` }
+					onClick={ updatePlayerPredictions }
 					style={{
 						'background': `${ teams[game.home.team].primaryColor }`,
 						'border': `4px solid ${ teams[game.home.team].secondaryColor }`
@@ -157,24 +150,31 @@ export default function Game ({ game, teams, board, playerPredictions, setPlayer
 
 			</div>
 
-			<div className="game-tie">
-
 				{
 
 					board === 'postSeason'
 
 					?
 
-					null
+					<div></div>
 
 					:
 
-					'TIE'
+					<div className="game-tie">
+
+						<button
+							id="tie"
+							className={ `${ outcome === 'tie' ? 'selected-tie-button ' : '' }tie-button auto-x-margins` }
+							onClick={ updatePlayerPredictions }
+						>
+
+							TIE
+
+						</button>
+
+					</div>
 
 				}
-
-
-			</div>
 
 			<div className="game-time-stadium-card">
 
