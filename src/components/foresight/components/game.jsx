@@ -114,7 +114,14 @@ export default function Game ({ key, game, teams, board, playerPredictions, setP
 
 	return (
 
-		<div className="game-card-grid">
+		<div
+			className="game-card-grid"
+			onClick={ () => {
+				console.log('Game ID: ', game.gameID);
+				console.log(outcome);
+
+			}}
+		>
 
 			<div className="primetime-game">{ primetimeInfo }</div>
 

@@ -3,7 +3,7 @@
 
 	display: grid;
 	grid-template-columns: 100%;
-	grid-template-rows: 200px 150px 600px;
+	grid-template-rows: 200px 150px 2fr;
 
 	justify-items: center;
 }
@@ -212,6 +212,7 @@
 
 	display: grid;
 	width: 90%;
+	height: 100%;
 
 	gap: 1rem;
 
@@ -223,6 +224,8 @@
 }
 
 .game-card-grid {
+	margin-bottom: 50px;
+
 	display: grid;
 
 	grid-template-columns: 100%;
@@ -232,6 +235,7 @@
 	height: 100%;
 
 	background-color: #E6D1BA;
+
 }
 
 .game-card {
@@ -330,7 +334,7 @@
 	grid-template-columns: 30% 40% 30%;
 }
 
-.foresight-team-record {
+.view-descriptor {
 	display: flex;
 
 	justify-content: start;

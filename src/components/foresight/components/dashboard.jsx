@@ -1,51 +1,77 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Dashboard ({ setBoard, boardGames, playerPredictions, view, setView, viewWeeks, setViewWeek, teams, viewTeam, setViewTeam, saveGameSheet }) {
+export default function Dashboard ({ setBoard, games, boardGames, allPlayerPredictions, playerPredictions, view, setView, viewWeeks, viewWeek, setViewWeek, teams, viewTeam, setViewTeam, saveGameSheet }) {
 	const [teamLocation, setTeamLocation] = useState('Arizona');
-	const [wins, setWins] = useState(0);
-	const [losses, setLosses] = useState(0);
+	const [descriptor, setDescriptor] = useState('');
 
 	const [saveDisabled, setSaveDisabled] = useState(true);
+	const [postSeasonDisabled, setPostSeasonDisabled] = useState(true);
 
 	useEffect(() => {
-		isSaveAndSubmitDisabled();
+		if (!games?.regularSeason || boardGames.length === 0 ) {
+			return;
+		}
 
-		let gamesWon = [ ...boardGames ].reduce((acc, game) => {
-			if (game.away.team === viewTeam) {
-				if (teamWon(game.gameID, 'awayWin')) {
-					return acc + 1;
+		let now = new Date();
+		now = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes());
+
+		let lastGame = games?.regularSeason[games?.regularSeason?.length - 1];
+
+		setSaveDisabled(boardGames[0]?.time < now);
+		setPostSeasonDisabled(lastGame?.time > now);
+
+	}, [boardGames]);
+
+	useEffect(() => {
+		if (view === 'team-view' && teamLocation !== '') {
+			let gamesWon = [ ...boardGames ].reduce((acc, game) => {
+				if (game.away.team === viewTeam) {
+					if (teamWon(game.gameID, 'awayWin')) {
+						return acc + 1;
+					}
 				}
-			}
 
-			if (game.home.team === viewTeam) {
-				if (teamWon(game.gameID, 'homeWin')) {
-					return acc + 1;
+				if (game.home.team === viewTeam) {
+					if (teamWon(game.gameID, 'homeWin')) {
+						return acc + 1;
+					}
 				}
-			}
 
-			return acc;
+				return acc;
 
-		}, 0);
+			}, 0);
 
-		let gamesLost = [ ...boardGames ].reduce((acc, game) => {
-			if (game.away.team === viewTeam) {
-				if (teamLost(game.gameID, 'awayWin')) {
-					return acc + 1;
+			let gamesLost = [ ...boardGames ].reduce((acc, game) => {
+				if (game.away.team === viewTeam) {
+					if (teamLost(game.gameID, 'awayWin')) {
+						return acc + 1;
+					}
 				}
-			}
 
-			if (game.home.team === viewTeam) {
-				if (teamLost(game.gameID, 'homeWin')) {
-					return acc + 1;
+				if (game.home.team === viewTeam) {
+					if (teamLost(game.gameID, 'homeWin')) {
+						return acc + 1;
+					}
 				}
-			}
 
-			return acc;
+				return acc;
 
-		}, 0);
+			}, 0);
 
-		setWins(gamesWon);
-		setLosses(gamesLost);
+			setDescriptor(`${ teamLocation }'s record is ${ gamesWon }-${ gamesLost }`);
+
+			return;
+
+		}
+
+		if (view === 'week-view') {
+			setDescriptor(`Week ${ viewWeek }`);
+
+			return;
+
+		}
+
+		setDescriptor('');
 
 	}, [teamLocation, playerPredictions, boardGames]);
 
@@ -150,14 +176,6 @@ export default function Dashboard ({ setBoard, boardGames, playerPredictions, vi
 		return !playerPredictions[gameID][lossOutcome];
 	}
 
-	let isSaveAndSubmitDisabled = () => {
-		let now = new Date();
-		now = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes());
-
-		setSaveDisabled(boardGames[0]?.time < now);
-
-	}
-
 	return (
 
 		<div className="foresight-dashboard">
@@ -181,6 +199,16 @@ export default function Dashboard ({ setBoard, boardGames, playerPredictions, vi
 				</button>
 
 				<button
+					disabled={ !allPlayerPredictions?.regularSeason?.submitted }
+					name="foresightPostSeason"
+					className="season-pill"
+					onClick={ changeBoard }
+				>
+					Foresight Post-Season
+				</button>
+
+				<button
+					disabled={ postSeasonDisabled }
 					name="postSeason"
 					className="season-pill"
 					onClick={ changeBoard }
@@ -223,21 +251,11 @@ export default function Dashboard ({ setBoard, boardGames, playerPredictions, vi
 			<div className="info-and-controls">
 
 				<div
-					className="foresight-team-record"
+					className="view-descriptor"
 				>
-					{
 
-						view === 'team-view' && teamLocation !== ''
+					{ descriptor }
 
-						?
-
-						`${ teamLocation }'s record is ${ wins }-${ losses }`
-
-						:
-
-						null
-
-					}
 				</div>
 
 				<div></div>
@@ -266,6 +284,6 @@ export default function Dashboard ({ setBoard, boardGames, playerPredictions, vi
 
 		</div>
 
-	)
+	);
 
 }

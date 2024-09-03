@@ -8,6 +8,7 @@ import GameGrid from './components/gameGrid.jsx';
 import './foresight.css';
 
 export default function ForesightController ({ player, teams, games }) {
+	const [allPlayerPredictions, setAllPlayerPredictions] = useState({  });
 	const [playerPredictions, setPlayerPredictions] = useState([  ]);
 	const [board, setBoard] = useState('regularSeason'); // Set default to which ever is closest.
 	const [boardGames, setBoardGames] = useState([  ]);
@@ -18,31 +19,41 @@ export default function ForesightController ({ player, teams, games }) {
 	const [viewTeam, setViewTeam] = useState('ARI');
 
 	useEffect(() => {
-		if (!board || !games[board]) {
+		if (!board) {
 			return;
 		}
 
 		console.log(`Getting ${ player }'s ${ board } predictions...`);
 
-		Axios.get(`http://localhost:3000/api/gameSheet/2024/${ player }/footballForesight/${ board }`)
+		Axios.get(`http://localhost:3000/api/gameSheet/2024/${ player }/footballForesight`)
 		.then((res) => {
-			console.log(res.data)
-			setPlayerPredictions(res.data);
+			setAllPlayerPredictions(res.data)
 		})
 		.catch((err) => {
 			console.log(err);
 		});
 
-		setBoardGames(games[board]);
+	}, []);
 
+	useEffect(() => {
+		if (!board || !games[board] || !allPlayerPredictions[board]) {
+			return;
+		}
+
+		setBoardGames(games[board]);
+		setPlayerPredictions(allPlayerPredictions[board]);
+		setViewWeeks(getAvailableWeeks());
+
+	}, [board, games, allPlayerPredictions]);
+
+	let getAvailableWeeks = () => {
 		let weeksAvailableInBoard = [ ...games[board] ].map((game) => game.week);
 
 		weeksAvailableInBoard = new Set([ ...weeksAvailableInBoard ]);
 		weeksAvailableInBoard = [ ...weeksAvailableInBoard ];
 
-		setViewWeeks(weeksAvailableInBoard);
-
-	}, [games, board]);
+		return weeksAvailableInBoard;
+	}
 
 	let saveGameSheet = (submit = false) => {
 		let payload = {
@@ -78,11 +89,14 @@ export default function ForesightController ({ player, teams, games }) {
 
 			<Dashboard
 				setBoard={ setBoard }
+				games={ games }
 				boardGames={ boardGames }
+				allPlayerPredictions={ allPlayerPredictions }
 				playerPredictions={ playerPredictions }
 				view={ view }
 				setView={ setView }
 				viewWeeks={ viewWeeks }
+				viewWeek={ viewWeek }
 				setViewWeek={ setViewWeek }
 				teams={ teams }
 				viewTeam={ viewTeam }
