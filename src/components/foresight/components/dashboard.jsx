@@ -7,6 +7,8 @@ export default function Dashboard ({ setBoard, games, boardGames, allPlayerPredi
 	const [saveDisabled, setSaveDisabled] = useState(true);
 	const [postSeasonDisabled, setPostSeasonDisabled] = useState(true);
 
+	const [scrollBarContent, setScrollBarContent] = useState(null);
+
 	useEffect(() => {
 		if (!games?.regularSeason || boardGames.length === 0 ) {
 			return;
@@ -23,84 +25,12 @@ export default function Dashboard ({ setBoard, games, boardGames, allPlayerPredi
 	}, [boardGames]);
 
 	useEffect(() => {
-		if (view === 'team-view' && teamLocation !== '') {
-			let gamesWon = [ ...boardGames ].reduce((acc, game) => {
-				if (game.away.team === viewTeam) {
-					if (teamWon(game.gameID, 'awayWin')) {
-						return acc + 1;
-					}
-				}
 
-				if (game.home.team === viewTeam) {
-					if (teamWon(game.gameID, 'homeWin')) {
-						return acc + 1;
-					}
-				}
-
-				return acc;
-
-			}, 0);
-
-			let gamesLost = [ ...boardGames ].reduce((acc, game) => {
-				if (game.away.team === viewTeam) {
-					if (teamLost(game.gameID, 'awayWin')) {
-						return acc + 1;
-					}
-				}
-
-				if (game.home.team === viewTeam) {
-					if (teamLost(game.gameID, 'homeWin')) {
-						return acc + 1;
-					}
-				}
-
-				return acc;
-
-			}, 0);
-
-			setDescriptor(`${ teamLocation }'s record is ${ gamesWon }-${ gamesLost }`);
-
-			return;
-
-		}
-
-		if (view === 'week-view') {
-			setDescriptor(`Week ${ viewWeek }`);
-
-			return;
-
-		}
-
-		setDescriptor('');
-
-	}, [teamLocation, playerPredictions, boardGames]);
-
-	let changeBoard = (e) => {
-		setBoard(e.target.name);
-	}
-
-	let changeView = (e) => {
-		setView(e.target.name);
-	}
-
-	let changeViewTeam = (e) => {
-		setViewTeam(e.target.name);
-
-		setTeamLocation(teams[e.target.name].teamLocation)
-
-	}
-
-	let changeViewWeek = (e) => {
-		setViewWeek(Number(e.target.name))
-	}
-
-	let determineScrollBarContent = () => {
 		if (view === 'team-view') {
 			let teamAbbs = Object.keys(teams);
-
 			teamAbbs.sort();
 
-			return (
+			setScrollBarContent(
 
 				<div className="dashboard-scrollable-content">
 
@@ -124,12 +54,10 @@ export default function Dashboard ({ setBoard, games, boardGames, allPlayerPredi
 				</div>
 
 			);
-
 		}
 
 		if (view === 'week-view') {
-
-			return (
+			setScrollBarContent(
 
 				<div className="dashboard-scrollable-content">
 
@@ -153,27 +81,89 @@ export default function Dashboard ({ setBoard, games, boardGames, allPlayerPredi
 				</div>
 
 			);
+		}
+
+	}, [view]);
+
+	useEffect(() => {
+		if (view === 'team-view' && teamLocation !== '') {
+			let gamesWon = 0;
+			let gamesLost = 0;
+			let gamesTied = 0;
+
+			[ ...boardGames ].forEach((game) => {
+				let gameOutcome = playerPredictions[game.gameID];
+
+				if (gameOutcome === undefined) {
+					return;
+				}
+
+				if (game.away.team === viewTeam) {
+					if (gameOutcome.tie) {
+						return gamesTied++;
+					}
+
+					if (gameOutcome.awayWin) {
+						return gamesWon++;
+					}
+
+					if (!gameOutcome.awayWin) {
+						return gamesLost++;
+					}
+
+				}
+
+				if (game.home.team === viewTeam) {
+					if (gameOutcome.tie) {
+						return gamesTied++;
+					}
+
+					if (gameOutcome.homeWin) {
+						return gamesWon++;
+					}
+
+					if (!gameOutcome.homeWin) {
+						return gamesLost++;
+					}
+
+				}
+
+			});
+
+			setDescriptor(`${ teamLocation }'s record is ${ gamesWon }-${ gamesLost }${ gamesTied > 0 ? `-${ gamesTied }` : '' }`);
+
+			return;
 
 		}
 
-		return null;
+		if (view === 'week-view') {
+			setDescriptor(`Week ${ viewWeek }`);
+
+			return;
+
+		}
+
+		setDescriptor('');
+
+	}, [view, viewWeek, teamLocation, playerPredictions, boardGames]);
+
+	let changeBoard = (e) => {
+		setBoard(e.target.name);
+	}
+
+	let changeView = (e) => {
+		setView(e.target.name);
+	}
+
+	let changeViewTeam = (e) => {
+		setViewTeam(e.target.name);
+
+		setTeamLocation(teams[e.target.name].teamLocation);
 
 	}
 
-	let teamWon = (gameID, winOutcome) => {
-		if (playerPredictions[gameID] === undefined) {
-			return false;
-		}
-
-		return playerPredictions[gameID][winOutcome];
-	}
-
-	let teamLost = (gameID, lossOutcome) => {
-		if (playerPredictions[gameID] === undefined) {
-			return false;
-		}
-
-		return !playerPredictions[gameID][lossOutcome];
+	let changeViewWeek = (e) => {
+		setViewWeek(Number(e.target.name));
 	}
 
 	return (
@@ -244,7 +234,7 @@ export default function Dashboard ({ setBoard, games, boardGames, allPlayerPredi
 					All
 				</button>
 
-				{ determineScrollBarContent() }
+				{ scrollBarContent }
 
 			</div>
 

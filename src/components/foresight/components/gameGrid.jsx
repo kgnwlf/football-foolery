@@ -43,7 +43,7 @@ export default function GameGrid ({ teams, board, boardGames, playerPredictions,
 				displayedGames.map((game) =>
 
 					<Game
-						key={ `${ game.gameID }` }
+						key={ `${ view }-${ viewWeek }-${ viewTeam }-${ game.gameID }` }
 						game={ game }
 						teams={ teams }
 						board={ board }

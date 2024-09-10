@@ -29,9 +29,13 @@ let sortTeams = (teamA, teamB) => {
 
 		return 0;
 
+		// return Math.random() < 0.5 ? -1 : 1; // Coin flip.
+
 	}
 
 	return 0;
+
+	// return Math.random() < 0.5 ? -1 : 1; // Coin flip.
 
 };
 
@@ -94,8 +98,8 @@ export const seedConferences = (games, teams, playerPredictions) => {
 		}
 
 		if (awayWin) {
-			resultsOfPredictions[game.home.team].losses += 1;
 			resultsOfPredictions[game.away.team].wins += 1;
+			resultsOfPredictions[game.home.team].losses += 1;
 
 			if (divisionGame) {
 				resultsOfPredictions[game.away.team].divisionWins += 1;
@@ -184,6 +188,8 @@ export const seedConferences = (games, teams, playerPredictions) => {
 			}
 
 			if (afcDivisionLeaders[division][1].wins < team[1].wins) {
+				afc.push(afcDivisionLeaders[division]);
+
 				afcDivisionLeaders[division] = team;
 
 				return;
@@ -198,6 +204,8 @@ export const seedConferences = (games, teams, playerPredictions) => {
 				}
 
 				if (afcDivisionLeaders[division][1].divisionWins < team[1].divisionWins) {
+					afc.push(afcDivisionLeaders[division]);
+
 					afcDivisionLeaders[division] = team;
 
 					return;
@@ -211,6 +219,8 @@ export const seedConferences = (games, teams, playerPredictions) => {
 				}
 
 				if (afcDivisionLeaders[division][1].conferenceWins < team[1].conferenceWins) {
+					afc.push(afcDivisionLeaders[division]);
+
 					afcDivisionLeaders[division] = team;
 
 					return;

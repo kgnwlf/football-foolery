@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export default function Game ({ key, game, teams, board, playerPredictions, setPlayerPredictions }) {
+export default function Game ({ game, teams, board, playerPredictions, setPlayerPredictions }) {
 	const [primetimeInfo, setPrimetimeInfo] = useState('');
 	const [stadium, setStadium] = useState('');
 	const [time, setTime] = useState('');
@@ -114,14 +114,7 @@ export default function Game ({ key, game, teams, board, playerPredictions, setP
 
 	return (
 
-		<div
-			className="game-card-grid"
-			onClick={ () => {
-				console.log('Game ID: ', game.gameID);
-				console.log(outcome);
-
-			}}
-		>
+		<div className="game-card-grid">
 
 			<div className="primetime-game">{ primetimeInfo }</div>
 

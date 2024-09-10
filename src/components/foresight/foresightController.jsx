@@ -5,6 +5,8 @@ import PlayoffSeeding from './components/playoffSeeding.jsx';
 import Dashboard from './components/dashboard.jsx';
 import GameGrid from './components/gameGrid.jsx';
 
+import { seedConferences } from './components/seedingFunctions.js';
+
 import './foresight.css';
 
 export default function ForesightController ({ player, teams, games }) {
@@ -57,7 +59,7 @@ export default function ForesightController ({ player, teams, games }) {
 
 	let saveGameSheet = (submit = false) => {
 		let payload = {
-			player: 'player2',
+			player: player,
 			gameMode: 'footballForesight',
 			board: board,
 			gameSheet: playerPredictions,
@@ -65,6 +67,32 @@ export default function ForesightController ({ player, teams, games }) {
 
 		if (submit) {
 			payload['submitted'] = true;
+
+			if (board === 'regularSeason') {
+				let [ nfc, afc ] = seedConferences(boardGames, teams, playerPredictions);
+
+				payload.gameSheet.nfcSeeding = {
+					first: nfc[0],
+					second: nfc[1],
+					third: nfc[2],
+					fourth: nfc[3],
+					fifth: nfc[4],
+					sixth: nfc[5],
+					seventh: nfc[6],
+				}
+
+				payload.gameSheet.afcSeeding = {
+					first: afc[0],
+					second: afc[1],
+					third: afc[2],
+					fourth: afc[3],
+					fifth: afc[4],
+					sixth: afc[5],
+					seventh: afc[6],
+				}
+
+			}
+
 		}
 
 		Axios.put('http://localhost:3000/api/gameSheet/', payload)
@@ -79,43 +107,59 @@ export default function ForesightController ({ player, teams, games }) {
 
 	return (
 
-		<div className="foresight-container">
+		<>
 
-			<PlayoffSeeding
-				boardGames={ boardGames }
-				teams={ teams }
-				playerPredictions={ playerPredictions }
-			/>
+			{
 
-			<Dashboard
-				setBoard={ setBoard }
-				games={ games }
-				boardGames={ boardGames }
-				allPlayerPredictions={ allPlayerPredictions }
-				playerPredictions={ playerPredictions }
-				view={ view }
-				setView={ setView }
-				viewWeeks={ viewWeeks }
-				viewWeek={ viewWeek }
-				setViewWeek={ setViewWeek }
-				teams={ teams }
-				viewTeam={ viewTeam }
-				setViewTeam={ setViewTeam }
-				saveGameSheet={ saveGameSheet }
-			/>
+				!board || !games[board] || !allPlayerPredictions[board]
 
-			<GameGrid
-				teams={ teams }
-				board={ board }
-				boardGames={ boardGames }
-				playerPredictions={ playerPredictions }
-				setPlayerPredictions={ setPlayerPredictions }
-				view={ view }
-				viewWeek={ viewWeek }
-				viewTeam={ viewTeam }
-			/>
+				?
 
-		</div>
+				null
+
+				:
+
+				<div className="foresight-container">
+
+					<PlayoffSeeding
+						boardGames={ boardGames }
+						teams={ teams }
+						playerPredictions={ playerPredictions }
+					/>
+
+					<Dashboard
+						setBoard={ setBoard }
+						games={ games }
+						boardGames={ boardGames }
+						allPlayerPredictions={ allPlayerPredictions }
+						playerPredictions={ playerPredictions }
+						view={ view }
+						setView={ setView }
+						viewWeeks={ viewWeeks }
+						viewWeek={ viewWeek }
+						setViewWeek={ setViewWeek }
+						teams={ teams }
+						viewTeam={ viewTeam }
+						setViewTeam={ setViewTeam }
+						saveGameSheet={ saveGameSheet }
+					/>
+
+					<GameGrid
+						teams={ teams }
+						board={ board }
+						boardGames={ boardGames }
+						playerPredictions={ playerPredictions }
+						setPlayerPredictions={ setPlayerPredictions }
+						view={ view }
+						viewWeek={ viewWeek }
+						viewTeam={ viewTeam }
+					/>
+
+				</div>
+
+			}
+
+		</>
 
 	);
 
